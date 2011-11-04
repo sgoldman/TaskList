@@ -113,9 +113,47 @@
 	</div>
 	
 	<script type="text/javascript" src="jquery.js"></script>
-
 	
 	<script>
+	
+	var tasklist = {
+		
+		newtask  : $('#newtask'),
+		
+		edittask : $('#edittask'),
+		
+		addtask  : $('.button a'),
+		
+		init : function() {
+			this.newtask.hide();
+			this.edittask.hide();
+		},
+		
+		showTaskInputs : function( el ) {
+			_this = this; 
+			
+			//does this function work for newtask and edittask?
+			_this.newtask.show();
+			
+			console.log(el)
+		}
+		
+	};
+	
+	$(document).ready(function(){ tasklist.init(); });
+	
+	
+	//what is the correct way to call these functions?? does addtask need to be in the object litaral? it seems disconnected now...
+	tasklist.addtask.click( function(e) {
+		tasklist.showTaskInputs(e);
+	});
+	
+	
+	
+	</script>
+
+	
+	<!-- <script>
 		
 		//hide forms
 		$("div#newtask").hide();
@@ -327,7 +365,7 @@
 		$("table input.checkbox").live('click', strikethrough)
 		
 	
-	</script>
+	</script> -->
 	
 	
 </body>
