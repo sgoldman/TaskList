@@ -1,0 +1,114 @@
+body {
+	width: 960px;
+	margin-left: 10px;
+	font-family: Georgia;
+	color: #333333;
+}
+
+h1 {
+	margin-left: 20px;
+	margin-bottom: 0px;
+}
+
+h2 {
+	margin-top: 10px;
+	margin-left: 30px;
+	border-bottom: 2px solid #333333;
+}
+
+#content {
+	margin-left: 40px;
+}
+
+th {
+	text-decoration: underline;
+}
+
+input.checkbox {
+	margin-left: 30px;
+}
+
+.center {
+	text-align: center;
+}
+
+.changes {
+	margin-left: 55px;
+}
+
+#newtask,
+#edittask {
+	margin-top: 20px;
+}
+
+.changes a,
+.button a,
+#add a,
+#save a {
+	/*text-decoration: none;
+	border-top: 1px solid grey;
+	border-left: 1px solid grey;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #bbbbbb;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	font-size: 80%;*/
+	color: #4295C6;
+	margin-right: 3px;
+}
+
+.changes a:hover,
+.button a:hover,
+#add a:hover,
+#save a:hover {
+	/*border-top: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid grey;
+	border-bottom: 1px solid grey;*/
+	color: #E22187;
+}
+
+.button {
+	text-align: right;
+	margin-top: 100px;
+}
+
+
+.right {
+	text-align: right;
+}
+
+.topmargin {
+	margin-top: 8px;
+}
+
+input.task {
+	width: 450px;
+	margin-left: 10px;
+}
+
+.message {
+	color: red;
+	padding-left: 60px;
+}
+
+.strikethrough {
+	text-decoration: line-through;
+}
+
+.red {
+	color: red;
+}
+
+.orange {
+	color: orange;
+}
+
+.blue {
+	color: blue;
+}

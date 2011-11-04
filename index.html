@@ -1,0 +1,334 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title> List It: Organize Your Life </title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+	<h1> List It: Organize Your Life </h1>
+	<h2> A Listmaker For All Your Needs </h2>
+	
+	<div id="content">
+		<h3> To-Do's </h3>
+		
+		<table width="940">
+			<tr>
+				<th>DONE!</th>
+				<th width="450">	</th>
+				<th>IMPORTANCE</th>
+				<th>DUE DATE</th>
+			</tr>
+			<tr>
+				<td><input class="checkbox" type="checkbox" align="right"> </input></td>
+				<td>Create a To-Do list!</td>
+				<td class="center">High</td>
+				<td class="center">Today</td>
+				<td class="changes"><a href="#edittask" class="edit"> Edit </a> | <a href="#" class="delete"> Delete </a></td>
+			</tr>
+		</table>
+		
+		<div class="button">
+			<a href="#newtask"> ADD TASK </a>
+		</div>
+		
+		<div id="newtask">
+			<form>
+				<fieldset>
+					<legend> Enter A New Task! </legend>
+					<span>  </span>
+					<p class="topmargin">
+						<label for="task"> TASK: </label> <input class="task" type="text" name="task">
+					</p>
+					<p>
+						<label for="importance"> IMPORTANCE: </label> 
+						<select name="importance">
+							<option value=""> </option>
+							<option value="High"> High </option>
+							<option value="Medium"> Medium </option>
+							<option value="Low"> Low </option>
+						</select>
+					</p>
+					<p>
+						<label for="calendar"> DUE DATE: </label> 
+						<select name="calendar">
+							<option value=""> </option>
+							<option value="Today">Today</option>
+							<option value="Tomorrow">Tomorrow</option>
+							<option value="Next Week">Next Week</option>
+							<option value="Next Month">Next Month</option>
+						</select>
+					</p>
+					
+					<div id="add" class="right">
+						<a href="#"> ADD TO LIST </a> |
+						<a href="#"> CLOSE </a>
+					</div>
+				</fieldset>
+			</form>
+			
+		</div>
+		
+		<div id="edittask">
+			<form>
+				<fieldset>
+					<legend> Make Changes! </legend> 
+					<span>  </span>
+					<p class="topmargin">
+						<label for="task"> TASK: </label> <input class="task" type="text" name="task">
+					</p>
+					<p>
+						<label for="importance"> IMPORTANCE: </label> 
+						<select name="importance">
+							<option value=""> </option>
+							<option value="High"> High </option>
+							<option value="Medium"> Medium </option>
+							<option value="Low"> Low </option>
+						</select>
+					</p>
+					<p>
+						<label for="calendar"> DUE DATE: </label> 
+						<select name="calendar">
+							<option value=""> </option>
+							<option value="Today">Today</option>
+							<option value="Tomorrow">Tomorrow</option>
+							<option value="Next Week">Next Week</option>
+							<option value="Next Month">Next Month</option>
+						</select>
+					</p>
+					
+					<input class="checkbox" name="done" type="checkbox" align="right"> COMPLETED TASK! </input>
+					
+					<input id="rowplace" type="hidden" name="rowplace" value="">
+					
+					<div id="save" class="right">
+						<a href="#"> SAVE CHANGES </a> |
+						<a href="#"> CLOSE </a>
+					</div>
+				</fieldset>
+			</form>
+			
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="jquery.js"></script>
+
+	
+	<script>
+		
+		//hide forms
+		$("div#newtask").hide();
+		$("div#edittask").hide();
+		
+		//show on click
+		$("div.button a").click(function(){
+			$("div#newtask").show();
+			$("div#newtask form :input").val("") //blank out the form
+			$("div.button").hide();
+		});
+		
+		//to not submit form on enter key
+		$("form").submit(function(){
+			return false;
+		});
+		
+		//to close div
+		$("div#add a:eq(1)").click(function(){
+			$("div#newtask").hide();
+			$("div.button").show();
+		})
+		
+		//to add items to the list on click of 'add to list'
+		$("div#add a:eq(0)").click(function(){
+			var taskname = $('input.task').val();
+			var importance = $('div#newtask select:eq(0)').val();
+			var calendar = $("div#newtask select:eq(1)").val();
+			
+			//sends message if no value in input
+			if(taskname == ""){
+				$("span").html("Please Enter A Task").addClass("message");
+				return false;
+			} else {
+				$("span").html("").removeClass("message");
+				$("table").append("<tr> <td><input class='checkbox' name='done' type='checkbox' align='right'> </input> </td> <td> "+taskname+" </td> <td class='center'> "+importance+" </td> <td class='center'> "+calendar+"</td> <td class='changes'><a class='edit' href='#edittask'> Edit </a> |<a class='delete' href='#'> Delete </a></td></tr>");
+				$("div#newtask").hide();
+				$("div.button").show();
+			
+			//change colors for priority	
+			if($("div#newtask select:eq(0)").val() == "High") {
+				$("tr:last").children().nextUntil("td:last-child").addClass("red")
+			} else if ($("div#newtask select:eq(0)").val() == "Medium") {
+				$("tr:last").children().nextUntil("td:last-child").addClass("orange")
+			} else if ($("div#newtask select:eq(0)").val() == "Low") {
+				$("tr:last").children().nextUntil("td:last-child").addClass("blue")
+			}
+				
+				//edit items
+				$("table a.edit").live('click', function(){
+					$("div#newtask").hide();
+					var id = $(this).attr("href");
+					var ischecked = $(this).parent().siblings().children(":eq(0)").attr("checked") //is checkbox true or false
+					var task = $(this).parent().siblings("td:eq(1)").html();
+					var implevel = $(this).parent().siblings("td:eq(2)").html();
+					var currentdate = $(this).parent().siblings("td:eq(3)").html();
+					var whichrow = $(this).parent().parent().index(); //which row the anchor is in
+					
+					$(id).show();
+					$("div.button").hide();
+					//to put current values into the edit box
+					$("div#edittask form :input").val(task);
+					$("#edittask select:eq(0) option[value="+implevel+"]").attr("selected", "selected");
+					$("#edittask select:eq(1) option[value="+currentdate+"]").attr("selected", "selected");
+					$("input#rowplace").val(whichrow); //figuring out the row number	
+					$("#edittask input.checkbox").attr('checked', ischecked);// for checkbox
+				});
+				
+				$("div#save a:eq(1)").live('click',function(){
+					$("div#edittask").hide();
+					$("div.button").show();
+				});
+				
+				$("div#save a:eq(0)").live('click', function(){
+					var editthis = $("input#rowplace").val()
+					
+					var newtask = $("#edittask input.task").val();
+					var newimp = $("#edittask select:eq(0) :selected").val();
+					var newdate = $("#edittask select:eq(1) :selected").val();
+					var checked = $("#edittask input.checkbox").is(" :checked")
+
+					if(newtask == ""){
+						$("span").html("Please Enter A Task").addClass("message");
+						return false;
+	
+					} else {
+						$("span").html("").removeClass("message");
+						$("table tr:eq("+editthis+")").replaceWith("<tr> <td><input class='checkbox' name='done' type='checkbox' align='right'> </input> </td> <td> "+newtask+" </td> <td class='center'> "+newimp+" </td> <td class='center'> "+newdate+"</td> <td class='changes'><a class='edit' href='#edittask'> Edit </a>| <a class='delete' href='#'> Delete </a></td></tr>");
+						if(checked == true){
+								$("table tr:eq("+editthis+") input.checkbox").attr("checked", true);
+								$("table tr:eq("+editthis+") input.checkbox").parent().nextUntil("td:last-child").addClass("strikethrough")
+							} else {
+								$("table tr:eq("+editthis+") input.checkbox").parent().nextUntil("td:last-child").removeClass("strikethrough"); 
+							};
+						$("div#edittask").hide();
+						$("div.button").show();
+					
+					if($("#edittask select:eq(0) :selected").val() == "High") {
+						$("table tr:eq("+editthis+")").children().nextUntil("td:last-child").addClass("red")
+					} else if ($("#edittask select:eq(0) :selected").val() == "Medium") {
+						$("table tr:eq("+editthis+")").children().nextUntil("td:last-child").addClass("orange")
+					} else if ($("#edittask select:eq(0) :selected").val() == "Low") {
+						$("table tr:eq("+editthis+")").children().nextUntil("td:last-child").addClass("blue")
+					}
+					return true;
+				}
+
+			}); //end edit click function tag
+				
+				
+				//delete on click
+				$("table a.delete").live('click',function(){
+					$(this).parent().parent().remove();
+				});
+				
+				//checkbox causes a strikethrough
+				function strikethrough() {
+					if($(this).is(" :checked")){
+						$(this).parent().nextUntil("td:last-child").addClass("strikethrough");
+					} else {
+						$(this).parent().nextUntil("td:last-child").removeClass("strikethrough");
+					}
+				};
+				
+				$("table input.checkbox").live('click', strikethrough)
+				
+				
+			return true;
+			
+			} //end first else statement
+		});// end original function
+		
+		//edit items - hardcode html
+		$("table a.edit").live('click', function(){
+			$("div#newtask").hide();
+			var id = $(this).attr("href");
+			var ischecked = $(this).parent().siblings().children(":eq(0)").attr("checked") //is checkbox true or false
+			var task = $(this).parent().siblings("td:eq(1)").html();
+			var implevel = $(this).parent().siblings("td:eq(2)").html();
+			var currentdate = $(this).parent().siblings("td:eq(3)").html();
+			var whichrow = $(this).parent().parent().index(); //which row the anchor is in
+			
+			$(id).show();
+			$("div.button").hide();
+			//to put current values into the edit box
+			$("div#edittask form :input").val(task);
+			$("#edittask select:eq(0) option[value="+implevel+"]").attr("selected", "selected");
+			$("#edittask select:eq(1) option[value="+currentdate+"]").attr("selected", "selected");
+			$("input#rowplace").val(whichrow); //figuring out the row number	
+			$("#edittask input.checkbox").attr('checked', ischecked);// for checkbox
+		});
+		
+		$("div#save a:eq(1)").live('click',function(){
+			$("div#edittask").hide();
+			$("div.button").show();
+		});
+		
+		$("div#save a:eq(0)").live('click', function(){
+			var editthis = $("input#rowplace").val()
+			
+			var newtask = $("#edittask input.task").val();
+			var newimp = $("#edittask select:eq(0) :selected").val();
+			var newdate = $("#edittask select:eq(1) :selected").val();
+			var checked = $("#edittask input.checkbox").is(" :checked")
+
+			if(newtask == ""){
+				$("span").html("Please Enter A Task").addClass("message");
+				return false;
+
+			} else {
+				$("span").html("").removeClass("message");
+				$("table tr:eq("+editthis+")").replaceWith("<tr> <td><input class='checkbox' name='done' type='checkbox' align='right'> </input> </td> <td> "+newtask+" </td> <td class='center'> "+newimp+" </td> <td class='center'> "+newdate+"</td> <td class='changes'><a class='edit' href='#edittask'> Edit </a>| <a class='delete' href='#'> Delete </a></td></tr>");
+				if(checked == true){
+						$("table tr:eq("+editthis+") input.checkbox").attr("checked", true);
+						$("table tr:eq("+editthis+") input.checkbox").parent().nextUntil("td:last-child").addClass("strikethrough")
+					} else {
+						$("table tr:eq("+editthis+") input.checkbox").parent().nextUntil("td:last-child").removeClass("strikethrough"); 
+					};
+				$("div#edittask").hide();
+				$("div.button").show();
+			
+			if($("#edittask select:eq(0) :selected").val() == "High") {
+				$("table tr:eq("+editthis+")").children().nextUntil("td:last-child").addClass("red")
+			} else if ($("#edittask select:eq(0) :selected").val() == "Medium") {
+				$("table tr:eq("+editthis+")").children().nextUntil("td:last-child").addClass("orange")
+			} else if ($("#edittask select:eq(0) :selected").val() == "Low") {
+				$("table tr:eq("+editthis+")").children().nextUntil("td:last-child").addClass("blue")
+			}
+			return true;
+		}
+
+	}); //end edit click function tag
+		
+		
+		//delete on click
+		$("table a.delete").live('click',function(){
+			$(this).parent().parent().remove();
+		});
+		
+		//checkbox causes a strikethrough
+		function strikethrough() {
+			if($(this).is(" :checked")){
+				$(this).parent().nextUntil("td:last-child").addClass("strikethrough");
+			} else {
+				$(this).parent().nextUntil("td:last-child").removeClass("strikethrough");
+			}
+		};
+		
+		$("table input.checkbox").live('click', strikethrough)
+		
+	
+	</script>
+	
+	
+</body>
+</html>
